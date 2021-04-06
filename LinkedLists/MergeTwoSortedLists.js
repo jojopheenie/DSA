@@ -25,25 +25,36 @@ Code
 */
 
 function mergeTwoLists(l1, l2) {
+  //Create a place holder head
     var head = new ListNode(0);
     var now = head;
+    //capture head of l1
     var p1 = l1;
+    //capture head of l2
     var p2 = l2;
+    //while eith head does not = null
     while (p1 || p2) {
+      //if head1 is null or head 2 does not = null and head2 is less than head1
       if (p1 === null || (p2 !== null && p2.val < p1.val)) {
+        //move head 2 to 2nd place
         now.next = p2;
+        //reassign head2 to the following node
         p2 = p2.next;
       } else {
+        // if head1 is less than head2 move head1 to 2nd place
         now.next = p1;
+        //reassign head1 to the following node
         p1 = p1.next;
       }
+      //reassign the place holder head to the following node so we can keep sorting
       now = now.next;
     }
+    //after nodes are in correct spots, get rid of place holder head and return sorted linked list
     return head.next;
   }
 
 // let l1={val:1,next:{val:2,next:{val:4,next:null}}}
-// let l2={val:1,next:{val:3,next:{val:4,next:null}}
+// let l2={val:1,next:{val:3,next:{val:4,next:null}}}
 // console.log(mergeTwoLists(l1, l2))
 
 //Resource:
