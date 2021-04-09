@@ -31,34 +31,68 @@ Return the input node.
 
 Notes
 The creator of homebrew couldn't solve this problem in a Google Interview: https://twitter.com/mxcl/status/608682016205344768
-
-Solution
 */
-var invertTree = function(root) {
-  if (!root)
-      return null;
 
+function TreeNode(val, left, right) {
+  this.val = val === undefined ? 0 : val;
+  this.left = left === undefined ? null : left;
+  this.right = right === undefined ? null : right;
+}
+
+var invertTree = function (root) { //2 //3
   // recursive
-  invertTree(root.left);
-  invertTree(root.right);
-  temp = root.left;
-  root.left = root.right;
-  root.right = temp;
+  if (!root) return null;
+  // let left = root.left
+  let temp = root.left; //1 //null
+  // calling invertTree on root.right and store that as root.left
+  root.left = invertTree(root.right) //3 //null
+  // calling invertTree on temp and store that as root.right
+  root.right = invertTree(temp) //1
+  // we want the first left child to be the FULL inverse of the right side
+  return root; //2, 3, 1
+};
 
-  // iterative
-  // var queue = [];
-  // queue.unshift(root);
-  // while(queue[0]){
-  //     current = queue.pop();
-  //     temp = current.left;
-  //     current.left  = current.right;
-  //     current.right = temp;
-  //     if(current.left) queue.unshift(current.left);
-  //     if(current.right) queue.unshift(current.right);
-  // }
+// if (!root) return null;
+// invertTree(root.left);
+// invertTree(root.right);
+// temp = root.left;
+// root.left = root.right;
+// root.right = temp;
+// return root;
 
+//left = 2
+//right = 7
+//          4
+//     2        7
+//  1    3    6   9
+
+// 7   =>    7
+//6 9       9 6
+
+// call stack number = ?
+// root = ?
+
+var iterativeInvertTree = function (root) {
+  // iterative;
+  var queue = [];
+  queue.unshift(root);
+  while (queue[0]) {
+    current = queue.pop();
+    temp = current.left;
+    current.left = current.right;
+    current.right = temp;
+    if (current.left) queue.unshift(current.left);
+    if (current.right) queue.unshift(current.right);
+  }
   return root;
 };
+
+let root = new TreeNode(4);
+//create the left side
+root.left = new TreeNode(2);
+root.left.left = new TreeNode(1);
+root.left.right = new TreeNode(3);
+root.right = new TreeNode(7);
 
 // Resources
 // https://leetcode.com/problems/invert-binary-tree/
